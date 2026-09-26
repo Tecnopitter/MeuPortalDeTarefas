@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster - Dashboard de Tarefas</title>
+    <!-- Fonte Inter Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ==================== TELA DE AUTENTICAÇÃO ==================== -->
+    <div id="auth-section" class="auth-container">
+        <!-- FORMULÁRIO DE LOGIN -->
+        <form id="login-form">
+            <div class="auth-header">
+                <h1>TaskMaster</h1>
+                <p style="color: var(--text-secondary);">Acesse para gerenciar suas tarefas</p>
+            </div>
+            <div class="form-group">
+                <label for="login-email">E-mail</label>
+                <input type="email" id="login-email" class="form-control" placeholder="seu@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Senha</label>
+                <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Entrar</button>
+            <div class="auth-toggle">
+                Não tem uma conta? <a href="#" id="show-register">Cadastre-se</a>
+            </div>
+        </form>
+
+        <!-- FORMULÁRIO DE CADASTRO (ESCONDIDO POR PADRÃO) -->
+        <form id="register-form" class="hidden">
+            <div class="auth-header">
+                <h1>Criar Conta</h1>
+                <p style="color: var(--text-secondary);">Comece a organizar seu dia</p>
+            </div>
+            <div class="form-group">
+                <label for="reg-name">Nome Completo</label>
+                <input type="text" id="reg-name" class="form-control" placeholder="Ex: João Silva" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-email">E-mail</label>
+                <input type="email" id="reg-email" class="form-control" placeholder="seu@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-password">Senha</label>
+                <input type="password" id="reg-password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Cadastrar</button>
+            <div class="auth-toggle">
+                Já tem conta? <a href="#" id="show-login">Faça Login</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- ==================== TELA DO DASHBOARD ==================== -->
+    <div id="app-section" class="hidden">
+        <!-- HEADER / TOPO -->
+        <header class="header">
+            <div class="logo">
+                <i class="fa-solid fa-list-check"></i> TaskMaster
+            </div>
+            <div class="user-profile">
+                <span id="user-greeting" style="font-weight: 500;">Olá, Usuário</span>
+                <button id="logout-btn" class="btn btn-secondary">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="main-content">
+            <!-- CARDS DE ESTATÍSTICAS / MÉTRICAS -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h3>Total de Tarefas</h3>
+                        <div class="value" id="stat-total">0</div>
+                    </div>
+                    <div class="metric-icon icon-blue">
+                        <i class="fa-solid fa-tasks"></i>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h3>Concluídas Hoje</h3>
+                        <div class="value" id="stat-today">0</div>
+                    </div>
+                    <div class="metric-icon icon-green">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h3>Atrasadas</h3>
+                        <div class="value" id="stat-overdue">0</div>
+                    </div>
+                    <div class="metric-icon icon-red">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h3>Em Aberto</h3>
+                        <div class="value" id="stat-pending">0</div>
+                    </div>
+                    <div class="metric-icon icon-yellow">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTROLES, FILTROS E BOTÃO CRIAR -->
+            <div class="controls-bar">
+                <div class="filters-group">
+                    <input type="text" id="search-input" class="form-control search-input" placeholder="Buscar tarefa...">
+                    
+                    <select id="filter-status" class="form-control" style="width: auto;">
+                        <option value="Todos">Status: Todos</option>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em Progresso">Em Progresso</option>
+                        <option value="Concluída">Concluída</option>
+                    </select>
+
+                    <select id="filter-priority" class="form-control" style="width: auto;">
+                        <option value="Todas">Prioridade: Todas</option>
+                        <option value="Baixa">Baixa</option>
+                        <option value="Média">Média</option>
+                        <option value="Alta">Alta</option>
+                    </select>
+
+                    <select id="filter-type" class="form-control" style="width: auto;">
+                        <option value="Todos">Tipo: Todos</option>
+                        <option value="Trabalho">Trabalho</option>
+                        <option value="Estudo">Estudo</option>
+                        <option value="Pessoal">Pessoal</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+
+                <button id="open-new-task-modal" class="btn btn-primary">
+                    <i class="fa-solid fa-plus"></i> Nova Tarefa
+                </button>
+            </div>
+
+            <!-- LISTA DE TAREFAS (CARDS) -->
+            <div id="tasks-container" class="tasks-grid">
+                <!-- Injetado dinamicamente via JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- ==================== MODAL DE CRIAR/EDITAR TAREFA ==================== -->
+    <div id="task-modal" class="modal-backdrop hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-title">Nova Tarefa</h2>
+                <button class="icon-btn close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="task-form">
+                <input type="hidden" id="task-id">
+
+                <div class="form-group">
+                    <label for="task-title">Título *</label>
+                    <input type="text" id="task-title" class="form-control" placeholder="Ex: Entregar relatório mensal" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="task-desc">Descrição</label>
+                    <textarea id="task-desc" class="form-control" rows="3" placeholder="Detalhes opcionais..."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="task-due-date">Prazo *</label>
+                        <input type="date" id="task-due-date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group" style="flex: 1;">
+                        <label for="task-type">Tipo de Tarefa</label>
+                        <select id="task-type" class="form-control">
+                            <option value="Trabalho">Trabalho</option>
+                            <option value="Estudo">Estudo</option>
+                            <option value="Pessoal">Pessoal</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="task-priority">Prioridade</label>
+                        <select id="task-priority" class="form-control">
+                            <option value="Baixa">Baixa</option>
+                            <option value="Média" selected>Média</option>
+                            <option value="Alta">Alta</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="flex: 1;">
+                        <label for="task-status">Status</label>
+                        <select id="task-status" class="form-control">
+                            <option value="Pendente">Pendente</option>
+                            <option value="Em Progresso">Em Progresso</option>
+                            <option value="Concluída">Concluída</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Tarefa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL DE LOG DE STATUS ==================== -->
+    <div id="logs-modal" class="modal-backdrop hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Historico / Status Log</h2>
+                <button class="icon-btn close-logs-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <ul id="logs-container" class="log-list">
+                <!-- Injetado dinamicamente -->
+            </ul>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-logs-modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
